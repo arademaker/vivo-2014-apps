@@ -1,0 +1,223 @@
+#+TITLE: Overview of Tools used at FGV
+#+AUTHOR: Alexandre Rademaker (IBM Research, EMAp/FGV)
+#+OPTIONS: ^:nil num:nil
+#+OPTIONS: toc:nil 
+#+PRETTIFY_CSS:     http://kinjo.github.io/org-html5presentation.el/resources/styles/prettify.css
+#+FONTS_CSS:        http://kinjo.github.io/org-html5presentation.el/resources/styles/fonts.css
+#+PRESENTATION_CSS: resources/styles/presentation.css
+#+COMMON_CSS:       http://kinjo.github.io/org-html5presentation.el/resources/styles/common.css
+#+DEFAULT_CSS:      http://kinjo.github.io/org-html5presentation.el/resources/styles/default.css
+#+MOON_CSS:         http://kinjo.github.io/org-html5presentation.el/resources/styles/moon.css
+#+SAND_CSS:         http://kinjo.github.io/org-html5presentation.el/resources/styles/sand.css
+#+SEA_WAVE_CSS:     http://kinjo.github.io/org-html5presentation.el/resources/styles/sea_wave.css
+#+IE_LT_9_JS:       http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js
+#+PRETTIFY_JS:      http://kinjo.github.io/org-html5presentation.el/resources/js/prettify.js
+#+UTILS_JS:         http://kinjo.github.io/org-html5presentation.el/resources/js/utils.js
+#+HTML_HEAD:        <link rel="stylesheet" href="resources/styles/mystyle.css" type="text/css" />
+
+* The toolset
+
+  1) [[http://www.gnu.org/software/emacs/][Emacs]], [[http://orgmode.org][Org-Mode]] (=dados.org= example)
+  2) Common Lisp compilers and interpreters: [[http://franz.com/products/allegro-common-lisp/][Allegro CL]], [[http://www.sbcl.org][SBCL]] and [[http://abcl.org][ABCL]]
+     (Lisp on JVM, so I can use Java RDF libraries) and [[http://common-lisp.net/project/slime/][Slime]]
+  3) [[http://www.w3.org/2000/10/swap/doc/cwm.html][CWM]]
+  4) [[http://franz.com/agraph/allegrograph/][Allegro Graph Triplestore]] and [[http://franz.com/agraph/gruff/][Gruff]]
+  5) Git (version control)
+  6) [[http://www.r-project.org][R]] (data manipulation)
+  7) Python, when it is absolutily necessary! ;-)
+  8) Useful command line tools [[http://xmlsoft.org][xsltproc and xmllint]] and [[http://tidy.sourceforge.net][tidy]]
+
+* Data sources
+
+  - We have to main sources of data: 
+    1) the FGV researchers' curricula vitae from [[http://lattes.cnpq.br][Lattes Platform]]
+    2) the FGV digital library
+
+  - This is [[http://lattes.cnpq.br/0675365413696898][my curriculum vitae]] in the Lattes Platform! It is not open
+    data! They use captcha! They should use [[http://www.w3.org/TR/xhtml-rdfa-primer/][RDFa]] or https://schema.org
+    microformats make the resumes HTML pages consumable by a program.
+
+  - The [[http://bibliotecadigital.fgv.br/dspace][FGV Digital Library]] runs [[bibliotecadigital.fgv.br/dspace/][Dspace]] and [[http://bibliotecadigital.fgv.br/ojs/][OJS]]. We [[http://www.openarchives.org/][OAI-PMH protocol]] to get
+    data from here (another presentation tomorrow!)
+
+  - Still working in a complete workflow for weekly and incremental
+    updates.
+
+* Lattes XML files
+
+  * To transform the Lattes files to RDF, I developed a XSLT, freely
+    available at github in the repository [[https://github.com/arademaker/SLattes][Semantic Lattes]]. We are
+    adapting it to VIVO.
+
+  * I have also to update and maintain the Lattes DTD.
+    #+BEGIN_SRC sh
+      for f in $ROOT/ontos/xml/*.xml; do
+          ID=$(basename $f .xml)
+          echo Processing $ID
+          xmllint --noout --dtdvalid LMPLCurriculo.DTD $f 2>> error.log
+          xsltproc --stringparam ID $ID lattes.xsl $f > $ID.rdf  
+      done
+    #+END_SRC
+
+  * The ingest into [[http://logics.emap.fgv.br:10035/repositories/lattes][AG triple store]] is done using the [[http://franz.com/agraph/support/documentation/current/agload.html][agload]]
+    utility. The load process takes aprox. 2 minutes:
+    : Load finished 487 sources in 00:02:03 (123.02 seconds).  
+    : Triples added: 1,690,538
+    : Average Rate: 13742.00 tps
+
+* Data deduplication
+
+  ... or [[http://en.wikipedia.org/wiki/Disambiguation_(metadata)][disambiguation]], instance matching, instance resolution etc.
+
+  - Considering a thesis defended by a FGV's student whom have as
+    advisor a professor at FGV. I will have triples about it from 3
+    different sources: (1) the RDF produced from the advisor's CV; (2)
+    the RDF produced from the student's CV; and (3) the RDF produced
+    from the XML obtained from the FGV Digital Library.
+
+  - Lattes lacks good identifiers. See =NRO-ID-CNPQ= attribute in the
+    =AUTORES= tag in Lattes XML files. Data from OAI server do not
+    have any ID at all.
+  
+  - The [[http://github.com/arademaker/vivo-code][current code]] that I use to identify duplicated resources is a
+    Common Lisp library. Entities are deduplicated separated.
+
+  - As a logician, I am very interested in approach this problem in a
+    more declarative and deductive way. 
+
+  - A *fixed-point* transformation in the RDF graph.
+
+  - I would like to have in the AG the [[http://www.ontotext.com/owlim/owl-sameas-optimisation][owl:sameAs optimization]].
+
+* Data deduplication with SPARQL
+
+  In the previous code, the most costly function is =merge-nodes=. Can
+  we use SPARQL to merge nodes? One possible approach very fast in AG.
+
+  #+BEGIN_EXAMPLE
+    delete { ?s1 ?p ?o . }
+    insert { ?s2 ?p ?o . }
+    where {
+      ?s1 owl:sameAs ?s2 .
+      ?s1 ?p ?o .
+      filter( !sameTerm(?p, owl:sameAs) )
+    } 
+  #+END_EXAMPLE
+
+  #+BEGIN_EXAMPLE
+    delete { ?x ?p ?o1 . }
+    insert { ?x ?p ?o2 . }
+    where {
+      ?o1 owl:sameAs ?o2 .
+      ?x ?p ?o1 .
+      filter( !sameTerm(?p, owl:sameAs) )
+    }
+  #+END_EXAMPLE
+
+* Data deduplication with SPARQL
+
+  Problems with the SPARQL approach! 
+
+  #+BEGIN_HTML
+  <p>&nbsp;</p>
+  #+END_HTML
+
+  #+BEGIN_SRC dot :file test-dot-1.svg :exports results :cmdline -Kdot -Tsvg 
+  digraph test {
+   bgcolor="transparent";
+   a -> b [label="owl:sameAs"] ;
+   b -> a [label="owl:sameAs"] ;
+
+   d -> e [label="owl:sameAs"] ;
+   e -> f [label="owl:sameAs"] ;
+
+  }
+  #+END_SRC
+
+* Mapping Lattes RDF to VIVO RDF
+
+  - Two options: 
+    - adapt the XSLT transformations to produce VIVO RDF.
+    - transform the graph using SPARQL or rules! 
+
+  - Franz's Gruff and Allegro Graph web interface are very useful
+    here.
+
+  - Rules were easly tested with [[http://www.w3.org/2000/10/swap/doc/cwm.html][CWM]]. One example of rules is
+
+    #+BEGIN_EXAMPLE
+      { ?dept foaf:member ?person ;
+              rdf:type foaf:Group . } => 
+      { [ vivo:relates ?dept ;
+          vivo:relates ?person ;
+          a vivo:FacultyPosition ;
+          rdfs:label "Professor Adjunto"@pt ] . } .
+   #+END_EXAMPLE
+
+* Mapping using SPARQL
+
+  CWM rules (n3 files) are easily mapped to SPARQL.
+
+  #+BEGIN_EXAMPLE
+    insert 
+    { graph <http://www.fgv.br/vivo/import/> 
+      {            
+       [ vivo:relates ?dept ;
+         vivo:relates ?person ;
+          a vivo:FacultyPosition ;
+         rdfs:label "Professor Adjunto"@pt ] . 
+      }
+    }
+    where
+    { ?dept foaf:member ?person ;
+            rdf:type foaf:Group . 
+    }
+  #+END_EXAMPLE
+  
+  But this is not a very declarative approach! It does not scale
+  easily! We are working on [[http://en.wikipedia.org/wiki/Ontology_alignment][Ontology Mapping]] techniques. We have one
+  [[http://arademaker.github.io/bibliography/publication-27.html][ongoing research]] on that.
+
+* Problems with SPARQL transformation
+
+  - The query produces blank nodes that need to be transformed into
+    normal nodes before loaded into VIVO;
+  
+  - All created triples are placed in a separated graph; and 
+
+  - If this query is executed twice it will generate duplicated and
+    dispensable triples. This is the most important limitation of
+    using SPARQL for me.
+
+  CWM will only execute a rule whenever necessary and the rules do not
+  have to explicit declare any condition to avoid unnecessary creation
+  of triples.
+
+* Data ingest using VIVO Update API
+
+  - Why? Periodical updates need batch mode process.
+
+  - To clean the vitro-kb-2 before a new ingesting:
+  : update=clear graph <http://vitro.mannlib.cornell.edu/default/vitro-kb-2>
+  
+  - To ingest the new-data.rdf
+  : update=LOAD <http://nlp.emap.fgv.br/new-data.rdf> into 
+  :  graph <http://vitro.mannlib.cornell.edu/default/vitro-kb-2>
+
+  - The command line
+  : curl -i -d 'email=MYUSER' -d 'password=MYPASS' -d '@FILE.sparql' 
+  :  'http://localhost:8080/vivo/api/sparqlUpdate'
+
+* Conclusion
+
+  #+BEGIN_HTML
+  <p style="margin: 3cm 0 2cm 0; font-size: 50px; text-align: center;">Thank you!</p>
+  #+END_HTML
+
+  #+BEGIN_HTML
+  <p style="margin: 2cm 0 3cm 0; font-size: 50px; text-align: center;">Questions?</p>
+  #+END_HTML
+
+  Slides will be available at http://arademaker.github.com. Our VIVO
+  instance [[http://logics.emap.fgv.br:8080/vivo/][VIVO@FGV]].
+

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Overview of Tools used at FGV</title>
+<!-- 2014-08-06 Wed 17:52 -->
+<meta  http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+<meta  charset="utf-8">
+<meta  name="generator" content="Org-mode">
+<meta  name="author" content="Alexandre Rademaker (IBM Research, EMAp/FGV)">
+<link id="prettify-link" href="http://kinjo.github.io/org-html5presentation.el/resources/styles/prettify.css" rel="stylesheet" disabled />
+<link href="http://kinjo.github.io/org-html5presentation.el/resources/styles/fonts.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="resources/styles/presentation.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="http://kinjo.github.io/org-html5presentation.el/resources/styles/common.css" rel="stylesheet" type="text/css" media="screen" />
+<link class="theme" href="http://kinjo.github.io/org-html5presentation.el/resources/styles/default.css" rel="stylesheet" type="text/css" media="screen" />
+<link class="theme" href="http://kinjo.github.io/org-html5presentation.el/resources/styles/moon.css" rel="stylesheet" type="text/css" media="screen" />
+<link class="theme" href="http://kinjo.github.io/org-html5presentation.el/resources/styles/sand.css" rel="stylesheet" type="text/css" media="screen"/>
+<link class="theme" href="http://kinjo.github.io/org-html5presentation.el/resources/styles/sea_wave.css" rel="stylesheet" type="text/css" media="screen"/>
+<link rel="stylesheet" href="resources/styles/mystyle.css" type="text/css" />
+</head>
+<body>
+<div id="flex-container">
+<nav id="helpers">
+<button title="Previous slide" id="nav-prev" class="nav-prev">&#8701;</button>
+<button title="Jump to a random slide" id="slide-no">5</button>
+<button title="Next slide" id="nav-next" class="nav-next">&#8702;</button>
+<menu>
+<!-- <button type="checkbox" data-command="toc" title="Table of Contents" class="toc">TOC</button> -->
+<!-- <button type="checkbox" data-command="resources" title="View Related Resources">&#9734;</button> -->
+<!-- <button type="checkbox" data-command="notes" title="View Slide Notes">&#9999;</button> -->
+<!-- <button type="checkbox" data-command="source" title="View slide source">&#8635;</button> -->
+<button type="checkbox" data-command="help" title="View Help">?</button>
+</menu>
+</nav>
+<div class="slides">
+<div id="presentation-counter">Loading...</div>
+<div class="slide title-slide" id="landing-slide">
+<section class="middle">
+<hgroup>
+<h1>Overview of Tools used at FGV</h1>
+<h2></h2>
+</hgroup>
+<p>Press <span id="left-init-key" class="key">&rarr;</span> key to advance.</p>
+<p class="author">Author: Alexandre Rademaker (IBM Research, EMAp/FGV)</p>
+<p class="date">Created: 2014-08-06 Wed 17:52</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.7b)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+
+</section>
+</div>
+
+<div id="outline-container-sec-1" class="slide transitionSlide">
+<header id="sec-1">The toolset</header>
+<section>
+<ol class="org-ol">
+<li><a href="http://www.gnu.org/software/emacs/">Emacs</a>, <a href="http://orgmode.org">Org-Mode</a> (<code>dados.org</code> example)
+</li>
+<li>Common Lisp compilers and interpreters: <a href="http://franz.com/products/allegro-common-lisp/">Allegro CL</a>, <a href="http://www.sbcl.org">SBCL</a> and <a href="http://abcl.org">ABCL</a>
+     (Lisp on JVM, so I can use Java RDF libraries) and <a href="http://common-lisp.net/project/slime/">Slime</a>
+</li>
+<li><a href="http://www.w3.org/2000/10/swap/doc/cwm.html">CWM</a>
+</li>
+<li><a href="http://franz.com/agraph/allegrograph/">Allegro Graph Triplestore</a> and <a href="http://franz.com/agraph/gruff/">Gruff</a>
+</li>
+<li>Git (version control)
+</li>
+<li><a href="http://www.r-project.org">R</a> (data manipulation)
+</li>
+<li>Python, when it is absolutily necessary! ;-)
+</li>
+<li>Useful command line tools <a href="http://xmlsoft.org">xsltproc and xmllint</a> and <a href="http://tidy.sourceforge.net">tidy</a>
+</li>
+</ol>
+</section>
+
+</div>
+<div id="outline-container-sec-2" class="slide transitionSlide">
+<header id="sec-2">Data sources</header>
+<section>
+<ul class="org-ul">
+<li>We have to main sources of data: 
+<ol class="org-ol">
+<li>the FGV researchers' curricula vitae from <a href="http://lattes.cnpq.br">Lattes Platform</a>
+</li>
+<li>the FGV digital library
+</li>
+</ol>
+</li>
+
+<li>This is <a href="http://lattes.cnpq.br/0675365413696898">my curriculum vitae</a> in the Lattes Platform! It is not open
+data! They use captcha! They should use <a href="http://www.w3.org/TR/xhtml-rdfa-primer/">RDFa</a> or <a href="https://schema.org">https://schema.org</a>
+microformats make the resumes HTML pages consumable by a program.
+</li>
+
+<li>The <a href="http://bibliotecadigital.fgv.br/dspace">FGV Digital Library</a> runs <i>Dspace</i> and <a href="http://bibliotecadigital.fgv.br/ojs/">OJS</a>. We <a href="http://www.openarchives.org/">OAI-PMH protocol</a> to get
+data from here (another presentation tomorrow!)
+</li>
+
+<li>Still working in a complete workflow for weekly and incremental
+updates.
+</li>
+</ul>
+</section>
+
+</div>
+<div id="outline-container-sec-3" class="slide transitionSlide">
+<header id="sec-3">Lattes XML files</header>
+<section>
+<ul class="org-ul">
+<li>To transform the Lattes files to RDF, I developed a XSLT, freely
+available at github in the repository <a href="https://github.com/arademaker/SLattes">Semantic Lattes</a>. We are
+adapting it to VIVO.
+</li>
+
+<li>I have also to update and maintain the Lattes DTD.
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #a020f0;">for</span> f<span style="color: #a020f0;"> in</span> $<span style="color: #a0522d;">ROOT</span>/ontos/xml/*.xml; <span style="color: #a020f0;">do</span>
+    <span style="color: #a0522d;">ID</span>=$(<span style="color: #ff00ff;">basename</span> $<span style="color: #a0522d;">f</span> .xml)
+    <span style="color: #483d8b;">echo</span> Processing $<span style="color: #a0522d;">ID</span>
+    xmllint --noout --dtdvalid LMPLCurriculo.DTD $<span style="color: #a0522d;">f</span> 2&gt;&gt; error.log
+    xsltproc --stringparam ID $<span style="color: #a0522d;">ID</span> lattes.xsl $<span style="color: #a0522d;">f</span> &gt; $<span style="color: #a0522d;">ID</span>.rdf  
+<span style="color: #a020f0;">done</span>
+</pre>
+</div>
+</li>
+
+<li>The ingest into <a href="http://logics.emap.fgv.br:10035/repositories/lattes">AG triple store</a> is done using the <a href="http://franz.com/agraph/support/documentation/current/agload.html">agload</a>
+    utility. The load process takes aprox. 2 minutes:
+<pre class="example">
+Load finished 487 sources in 00:02:03 (123.02 seconds).  
+Triples added: 1,690,538
+Average Rate: 13742.00 tps
+</pre>
+</li>
+</ul>
+</section>
+
+</div>
+<div id="outline-container-sec-4" class="slide transitionSlide">
+<header id="sec-4">Data deduplication</header>
+<section>
+<p>
+&#x2026; or <a href="http://en.wikipedia.org/wiki/Disambiguation_(metadata)">disambiguation</a>, instance matching, instance resolution etc.
+</p>
+
+<ul class="org-ul">
+<li>Considering a thesis defended by a FGV's student whom have as
+advisor a professor at FGV. I will have triples about it from 3
+different sources: (1) the RDF produced from the advisor's CV; (2)
+the RDF produced from the student's CV; and (3) the RDF produced
+from the XML obtained from the FGV Digital Library.
+</li>
+
+<li>Lattes lacks good identifiers. See <code>NRO-ID-CNPQ</code> attribute in the
+<code>AUTORES</code> tag in Lattes XML files. Data from OAI server do not
+have any ID at all.
+</li>
+
+<li>The <a href="http://github.com/arademaker/vivo-code">current code</a> that I use to identify duplicated resources is a
+Common Lisp library. Entities are deduplicated separated.
+</li>
+
+<li>As a logician, I am very interested in approach this problem in a
+more declarative and deductive way. 
+</li>
+
+<li>A <b>fixed-point</b> transformation in the RDF graph.
+</li>
+
+<li>I would like to have in the AG the <a href="http://www.ontotext.com/owlim/owl-sameas-optimisation">owl:sameAs optimization</a>.
+</li>
+</ul>
+</section>
+
+</div>
+<div id="outline-container-sec-5" class="slide transitionSlide">
+<header id="sec-5">Data deduplication with SPARQL</header>
+<section>
+<p>
+In the previous code, the most costly function is <code>merge-nodes</code>. Can
+we use SPARQL to merge nodes? One possible approach very fast in AG.
+</p>
+
+<pre class="example">
+delete { ?s1 ?p ?o . }
+insert { ?s2 ?p ?o . }
+where {
+  ?s1 owl:sameAs ?s2 .
+  ?s1 ?p ?o .
+  filter( !sameTerm(?p, owl:sameAs) )
+}
+</pre>
+
+<pre class="example">
+delete { ?x ?p ?o1 . }
+insert { ?x ?p ?o2 . }
+where {
+  ?o1 owl:sameAs ?o2 .
+  ?x ?p ?o1 .
+  filter( !sameTerm(?p, owl:sameAs) )
+}
+</pre>
+</section>
+
+</div>
+<div id="outline-container-sec-6" class="slide transitionSlide">
+<header id="sec-6">Data deduplication with SPARQL</header>
+<section>
+<p>
+Problems with the SPARQL approach! 
+</p>
+
+<p>&nbsp;</p>
+
+
+<div class="figure">
+<p><img src="test-dot-1.svg" alt="test-dot-1.svg">
+</p>
+</div>
+</section>
+
+</div>
+<div id="outline-container-sec-7" class="slide transitionSlide">
+<header id="sec-7">Mapping Lattes RDF to VIVO RDF</header>
+<section>
+<ul class="org-ul">
+<li>Two options: 
+<ul class="org-ul">
+<li>adapt the XSLT transformations to produce VIVO RDF.
+</li>
+<li>transform the graph using SPARQL or rules! 
+</li>
+</ul>
+</li>
+
+<li>Franz's Gruff and Allegro Graph web interface are very useful
+here.
+</li>
+
+<li>Rules were easly tested with <a href="http://www.w3.org/2000/10/swap/doc/cwm.html">CWM</a>. One example of rules is
+
+<pre class="example">
+{ ?dept foaf:member ?person ;
+        rdf:type foaf:Group . } =&gt; 
+{ [ vivo:relates ?dept ;
+    vivo:relates ?person ;
+    a vivo:FacultyPosition ;
+    rdfs:label "Professor Adjunto"@pt ] . } .
+</pre>
+</li>
+</ul>
+</section>
+
+</div>
+<div id="outline-container-sec-8" class="slide transitionSlide">
+<header id="sec-8">Mapping using SPARQL</header>
+<section>
+<p>
+CWM rules (n3 files) are easily mapped to SPARQL.
+</p>
+
+<pre class="example">
+insert 
+{ graph &lt;http://www.fgv.br/vivo/import/&gt; 
+  {            
+   [ vivo:relates ?dept ;
+     vivo:relates ?person ;
+      a vivo:FacultyPosition ;
+     rdfs:label "Professor Adjunto"@pt ] . 
+  }
+}
+where
+{ ?dept foaf:member ?person ;
+        rdf:type foaf:Group . 
+}
+</pre>
+
+<p>
+But this is not a very declarative approach! It does not scale
+easily! We are working on <a href="http://en.wikipedia.org/wiki/Ontology_alignment">Ontology Mapping</a> techniques. We have one
+<a href="http://arademaker.github.io/bibliography/publication-27.html">ongoing research</a> on that.
+</p>
+</section>
+
+</div>
+<div id="outline-container-sec-9" class="slide transitionSlide">
+<header id="sec-9">Problems with SPARQL transformation</header>
+<section>
+<ul class="org-ul">
+<li>The query produces blank nodes that need to be transformed into
+normal nodes before loaded into VIVO;
+</li>
+
+<li>All created triples are placed in a separated graph; and 
+</li>
+
+<li>If this query is executed twice it will generate duplicated and
+dispensable triples. This is the most important limitation of
+using SPARQL for me.
+</li>
+</ul>
+
+<p>
+CWM will only execute a rule whenever necessary and the rules do not
+have to explicit declare any condition to avoid unnecessary creation
+of triples.
+</p>
+</section>
+
+</div>
+<div id="outline-container-sec-10" class="slide transitionSlide">
+<header id="sec-10">Data ingest using VIVO Update API</header>
+<section>
+<ul class="org-ul">
+<li>Why? Periodical updates need batch mode process.
+</li>
+
+<li>To clean the vitro-kb-2 before a new ingesting:
+</li>
+</ul>
+<pre class="example">
+update=clear graph &lt;http://vitro.mannlib.cornell.edu/default/vitro-kb-2&gt;
+</pre>
+
+<ul class="org-ul">
+<li>To ingest the new-data.rdf
+</li>
+</ul>
+<pre class="example">
+update=LOAD &lt;http://nlp.emap.fgv.br/new-data.rdf&gt; into 
+ graph &lt;http://vitro.mannlib.cornell.edu/default/vitro-kb-2&gt;
+</pre>
+
+<ul class="org-ul">
+<li>The command line
+</li>
+</ul>
+<pre class="example">
+curl -i -d 'email=MYUSER' -d 'password=MYPASS' -d '@FILE.sparql' 
+ 'http://localhost:8080/vivo/api/sparqlUpdate'
+</pre>
+</section>
+
+</div>
+<div id="outline-container-sec-11" class="slide transitionSlide">
+<header id="sec-11">Conclusion</header>
+<section>
+<p style="margin: 3cm 0 2cm 0; font-size: 50px; text-align: center;">Thank you!</p>
+
+<p style="margin: 2cm 0 3cm 0; font-size: 50px; text-align: center;">Questions?</p>
+
+<p>
+Slides will be available at <a href="http://arademaker.github.com">http://arademaker.github.com</a>. Our VIVO
+instance <a href="http://logics.emap.fgv.br:8080/vivo/">VIVO@FGV</a>.
+</p>
+</section>
+</div><aside id="help" class="sidebar invisible" style="display: none;">
+<table>
+<caption>Help</caption>
+<tbody>
+<tr>
+<th>Move Around</th>
+<td>&larr;&nbsp;&rarr;</td>
+</tr>
+<tr>
+<th>Change Theme</th>
+<td>t</td>
+</tr>
+<tr>
+<th>Syntax Highlight</th>
+<td>h</td>
+</tr>
+<tr>
+<th>Toggle 3D</th>
+<td>3</td>
+</tr>
+<tr>
+<th>Help</th>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</aside>
+</div>
+</div>
+<!--[if lt IE 9]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+</script>
+<script>CFInstall.check({ mode: "overlay" });</script>
+<![endif]-->
+<script src="http://kinjo.github.io/org-html5presentation.el/resources/js/prettify.js" onload="prettyPrint();" defer></script>
+<script src="http://kinjo.github.io/org-html5presentation.el/resources/js/utils.js"></script>
+</body>
+</html>
