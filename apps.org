@@ -29,7 +29,7 @@
 
 * Data sources
 
-  - We have to main sources of data: 
+  - We have two main sources of data: 
     1) the FGV researchers' curricula vitae from [[http://lattes.cnpq.br][Lattes Platform]]
     2) the FGV digital library
 
@@ -40,7 +40,7 @@
   - The [[http://bibliotecadigital.fgv.br/dspace][FGV Digital Library]] runs [[bibliotecadigital.fgv.br/dspace/][Dspace]] and [[http://bibliotecadigital.fgv.br/ojs/][OJS]]. We [[http://www.openarchives.org/][OAI-PMH protocol]] to get
     data from here (another presentation tomorrow!)
 
-  - Still working in a complete workflow for weekly and incremental
+  - Still working on a complete workflow for weekly and incremental
     updates.
 
 * Lattes XML files
@@ -69,7 +69,7 @@
 
   ... or [[http://en.wikipedia.org/wiki/Disambiguation_(metadata)][disambiguation]], instance matching, instance resolution etc.
 
-  - Considering a thesis defended by a FGV's student whom have as
+  - Considering a thesis defended by a FGV's student who has an
     advisor a professor at FGV. I will have triples about it from 3
     different sources: (1) the RDF produced from the advisor's CV; (2)
     the RDF produced from the student's CV; and (3) the RDF produced
@@ -82,8 +82,8 @@
   - The [[http://github.com/arademaker/vivo-code][current code]] that I use to identify duplicated resources is a
     Common Lisp library. Entities are deduplicated separated.
 
-  - As a logician, I am very interested in approach this problem in a
-    more declarative and deductive way. 
+  - As a logician, I am very interested in approaching this problem in
+    a more declarative and deductive way.
 
   - A *fixed-point* transformation in the RDF graph.
 
