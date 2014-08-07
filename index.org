@@ -122,7 +122,7 @@
   <p>&nbsp;</p>
   #+END_HTML
 
-  #+BEGIN_SRC dot :file test-dot-1.svg :exports results :cmdline -Kdot -Tsvg 
+  #+BEGIN_SRC dot :file deduplication.svg :exports results :cmdline -Kdot -Tsvg 
   digraph test {
    bgcolor="transparent";
    a -> b [label="owl:sameAs"] ;
